@@ -1,4 +1,5 @@
-﻿namespace Drones
+﻿
+namespace Drones
 {
     // Cette partie de la classe Drone définit ce qu'est un drone par un modèle numérique
     public partial class Drone
@@ -23,12 +24,16 @@
 
         // Cette méthode calcule le nouvel état dans lequel le drone se trouve après
         // que 'interval' millisecondes se sont écoulées
-        public void Update(int interval)
+        public void Update(object sender, int interval , KeyEventArgs e)
         {
-            _x += 2;                                    // Il s'est déplacé de 2 pixels vers la droite
-            _y += GlobalHelpers.alea.Next(-2, 3);       // Il s'est déplacé d'une valeur aléatoire vers le haut ou le bas
+            if (e.KeyCode == Keys.Left)
+                _x -= 5;
             _charge--;                                  // Il a dépensé de l'énergie
         }
 
+        internal void Update(int interval)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
