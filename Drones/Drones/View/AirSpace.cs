@@ -25,6 +25,79 @@ namespace Drones
             // dimensions the same size as the drawing surface of the form.
             airspace = currentContext.Allocate(this.CreateGraphics(), this.DisplayRectangle);
             this.fleet = fleet;
+
+            this.KeyPreview = true;
+
+            InitializeComponent();
+
+            this.KeyPreview = true; // Ensures the form captures key events before child controls
+            this.KeyUp += Form1_KeyUp;
+            this.KeyDown += Form1_KeyDown;
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.W:
+                    foreach (var drone in fleet)
+                    {
+                        drone.avancer();
+                    }
+                    break;
+                case Keys.S:
+                    foreach (var drone in fleet)
+                    {
+                        drone.reculer();
+                    }
+                    break;
+                case Keys.A:
+                    foreach (var drone in fleet)
+                    {
+                        drone.gauche();
+                    }
+                    break;
+                case Keys.D:
+                    foreach (var drone in fleet)
+                    {
+                        drone.droite();
+                    }
+                    break;
+            }
+        }
+
+
+    
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e, int interval)
+        {
+            if (e.KeyCode == Keys.W)
+            {
+                foreach (var drone in fleet)
+                {
+                    drone.etat();
+                    for (int i = 0; i < 5; i++) 
+                    {
+                        drone.avancer();
+                        Thread.Sleep(100);
+                        drone.Update(interval);
+
+                    }
+
+                }
+            }
+            if (e.KeyCode == Keys.S)
+            {
+                MessageBox.Show("Vous avez relâché la touche S !");
+            }
+            if (e.KeyCode == Keys.A)
+            {
+                MessageBox.Show("Vous avez relâché la touche A !");
+            }
+            if (e.KeyCode == Keys.D)
+            {
+                MessageBox.Show("Vous avez relâché la touche D !");
+            }
         }
 
         // Affichage de la situation actuelle
