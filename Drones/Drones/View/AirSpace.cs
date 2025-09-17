@@ -67,10 +67,6 @@ namespace Drones
                     break;
             }
         }
-
-
-    
-
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.W)
