@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace Drones
 {
     // La classe AirSpace représente le territoire au dessus duquel les drones peuvent voler
@@ -69,34 +71,67 @@ namespace Drones
 
     
 
-        private void Form1_KeyUp(object sender, KeyEventArgs e, int interval)
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.W)
             {
                 foreach (var drone in fleet)
                 {
                     drone.etat();
-                    for (int i = 0; i < 5; i++) 
+
+                    for (int i = 0; i < 5; i++)
                     {
                         drone.avancer();
-                        Thread.Sleep(100);
-                        drone.Update(interval);
-
+                        drone.Update(100); // Tu peux adapter
+                        Render();          // Affiche à l'écran
+                        Thread.Sleep(50);
                     }
+                }
+            }
+            if (e.KeyCode == Keys.D)
+            {
+                foreach (var drone in fleet)
+                {
+                    drone.etat();
 
+                    for (int i = 0; i < 5; i++)
+                    {
+                        drone.droite();
+                        drone.Update(100); // Tu peux adapter
+                        Render();          // Affiche à l'écran
+                        Thread.Sleep(50);
+                    }
                 }
             }
             if (e.KeyCode == Keys.S)
             {
-                MessageBox.Show("Vous avez relâché la touche S !");
+                foreach (var drone in fleet)
+                {
+                    drone.etat();
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        drone.reculer();
+                        drone.Update(100); // Tu peux adapter
+                        Render();          // Affiche à l'écran
+                        Thread.Sleep(50);
+                    }
+                }
             }
             if (e.KeyCode == Keys.A)
             {
-                MessageBox.Show("Vous avez relâché la touche A !");
-            }
-            if (e.KeyCode == Keys.D)
-            {
-                MessageBox.Show("Vous avez relâché la touche D !");
+                foreach (var drone in fleet)
+                {
+                    drone.etat();
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        drone.gauche();
+                        drone.Update(100); // Tu peux adapter
+                        Render();          // Affiche à l'écran
+                        Thread.Sleep(50);
+                    }
+                }
             }
         }
 
