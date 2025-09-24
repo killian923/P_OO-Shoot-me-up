@@ -18,7 +18,7 @@
         {
             _x = x;
             _y = y;
-            _speedx = 0;
+            _speedx = 10;
             _speedy = 0;
             _speed = 4;
             _name = name;

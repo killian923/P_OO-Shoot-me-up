@@ -135,7 +135,7 @@ namespace Drones
         {
             foreach (Player drone in fleet)
             {
-                drone.Update(100, fields);
+                drone.Update(10, fields);
             }
         }
 

@@ -18,16 +18,16 @@ namespace Drones
             List<Player> fleet= new List<Player>();
             List<Obstacle> fields = new List<Obstacle>();
 
-            Player player = new Player(AirSpace.WIDTH / 2, AirSpace.HEIGHT / 2, "Joe", 0, 0);
+            Player drone = new Player(AirSpace.WIDTH / 2, AirSpace.HEIGHT / 2, "Joe", 0, 0);
 
             Obstacle obstacle1 = new Obstacle(1000, 200, Color.Gray, 100, 100);
-            Obstacle obstacle2 = new Obstacle(800, 550, Color.Gray, 100, 100);
+            Obstacle obstacle2 = new Obstacle(800, 500, Color.Gray, 100, 100);
             Obstacle obstacle3 = new Obstacle(600, 50, Color.Gray, 100, 45);
             Obstacle obstacle4 = new Obstacle(400, 450, Color.Gray, 100, 50);
             Obstacle obstacle5 = new Obstacle(100, 150, Color.Gray, 100, 70);
 
 
-            fleet.Add(player);
+            fleet.Add(drone);
 
             fields.Add(obstacle1);
             fields.Add(obstacle2);
