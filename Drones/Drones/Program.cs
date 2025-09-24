@@ -15,10 +15,10 @@ namespace Drones
             ApplicationConfiguration.Initialize();
 
             // Création de la flotte de drones
-            List<Drone> fleet= new List<Drone>();
-            List<Obstacle> Champ = new List<Obstacle>();
+            List<Player> fleet= new List<Player>();
+            List<Obstacle> fields = new List<Obstacle>();
 
-            Drone drone = new Drone(AirSpace.WIDTH / 2, AirSpace.HEIGHT / 2, "Joe", 0, 0);
+            Player player = new Player(AirSpace.WIDTH / 2, AirSpace.HEIGHT / 2, "Joe", 0, 0);
 
             Obstacle obstacle1 = new Obstacle(1000, 200, Color.Gray, 100, 100);
             Obstacle obstacle2 = new Obstacle(800, 550, Color.Gray, 100, 100);
@@ -27,20 +27,17 @@ namespace Drones
             Obstacle obstacle5 = new Obstacle(100, 150, Color.Gray, 100, 70);
 
 
+            fleet.Add(player);
 
-
-
-            fleet.Add(drone);
-
-            Champ.Add(obstacle1);
-            Champ.Add(obstacle2);
-            Champ.Add(obstacle3);
-            Champ.Add(obstacle4);
-            Champ.Add(obstacle5);
+            fields.Add(obstacle1);
+            fields.Add(obstacle2);
+            fields.Add(obstacle3);
+            fields.Add(obstacle4);
+            fields.Add(obstacle5);
 
 
             // Démarrage
-            Application.Run(new AirSpace(fleet , Champ));
+            Application.Run(new AirSpace(fleet , fields));
         }
     }
 }

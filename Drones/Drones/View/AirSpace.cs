@@ -13,14 +13,14 @@ namespace Drones
         public static readonly int HEIGHT = 600;
 
         // La flotte est l'ensemble des drones qui évoluent dans notre espace aérien
-        private List<Drone> fleet;
-        private List<Obstacle> Champ;
+        private List<Player> fleet;
+        private List<Obstacle> fields;
 
         BufferedGraphicsContext currentContext;
         BufferedGraphics airspace;
 
         // Initialisation de l'espace aérien avec un certain nombre de drones
-        public AirSpace(List<Drone> fleet, List<Obstacle> Champ)
+        public AirSpace(List<Player> fleet, List<Obstacle> fields)
         {
             InitializeComponent();
             // Gets a reference to the current BufferedGraphicsContext
@@ -29,7 +29,7 @@ namespace Drones
             // dimensions the same size as the drawing surface of the form.
             airspace = currentContext.Allocate(this.CreateGraphics(), this.DisplayRectangle);
             this.fleet = fleet;
-            this.Champ = Champ;
+            this.fields = fields;
 
             this.KeyPreview = true;
 
@@ -70,41 +70,41 @@ namespace Drones
                     break;
             }
         }
-        public static bool DetecterCollision(Drone drone, Obstacle obstacle)
+        public static bool DetecterCollision(Player drone, Obstacle obstacle)
         {
             return
                 drone.X < obstacle.X + obstacle.Largeur &&
-                drone.X + Drone.TAILLE > obstacle.X &&
+                drone.X + Player.TAILLE > obstacle.X &&
                 drone.Y < obstacle.Y + obstacle.Profondeur &&
-                drone.Y + Drone.TAILLE > obstacle.Y;
+                drone.Y + Player.TAILLE > obstacle.Y;
         }
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            foreach (var drone in fleet)
+            foreach (var player in fleet)
             {
-                drone.etat(); // Ajuste la vitesse à 2 (comme dans ta classe)
+                player.etat(); // Ajuste la vitesse à 2 (comme dans ta classe)
 
                 for (int i = 0; i < 5; i++)
                 {
                     switch (e.KeyCode)
                     {
                         case Keys.W:
-                            drone.avancer();
+                            player.avancer();
                             break;
                         case Keys.D:
-                            drone.droite();
+                            player.droite();
                             break;
                         case Keys.S:
-                            drone.reculer();
+                            player.reculer();
                             break;
                         case Keys.A:
-                            drone.gauche();
+                            player.gauche();
                             break;
                         default:
                             break;
                     }
 
-                    drone.Update(100, Champ); // obstaclesList = ta liste d'obstacles
+                    player.Update(100, fields); // obstaclesList = ta liste d'obstacles
                     Render();
                     Thread.Sleep(50);
                 }
@@ -118,11 +118,11 @@ namespace Drones
             airspace.Graphics.Clear(Color.AliceBlue);
 
             // draw drones
-            foreach (Drone drone in fleet)
+            foreach (Player player in fleet)
             {
-                drone.Render(airspace);
+                player.Render(airspace);
             }
-            foreach (Obstacle obstacle in Champ)
+            foreach (Obstacle obstacle in fields)
             {
                 obstacle.Render(airspace);
             }
@@ -133,16 +133,16 @@ namespace Drones
         // Calcul du nouvel état après que 'interval' millisecondes se sont écoulées
         private void Update(int interval, List<Obstacle> obstacles)
         {
-            foreach (Drone drone in fleet)
+            foreach (Player drone in fleet)
             {
-                drone.Update(100, Champ);
+                drone.Update(100, fields);
             }
         }
 
         // Méthode appelée à chaque frame
         private void NewFrame(object sender, EventArgs e)
         {
-            this.Update(ticker.Interval, Champ);
+            this.Update(ticker.Interval, fields);
             this.Render();
         }
     }

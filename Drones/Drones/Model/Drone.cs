@@ -1,7 +1,7 @@
 ﻿namespace Drones
 {
-    // Cette partie de la classe Drone définit ce qu'est un drone par un modèle numérique
-    public partial class Drone
+    // Cette partie de la classe Player définit ce qu'est un drone par un modèle numérique
+    public partial class Player
     {
         public static readonly int FULLCHARGE = 1000;   // Charge maximale de la batterie
         private int _charge;                            // La charge actuelle de la batterie
@@ -14,7 +14,7 @@
 
 
         // Constructeur
-        public Drone(int x, int y, string name, int nextX, int nextY)
+        public Player(int x, int y, string name, int nextX, int nextY)
         {
             _x = x;
             _y = y;
