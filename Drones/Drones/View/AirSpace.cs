@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Drones
 {
@@ -13,12 +14,13 @@ namespace Drones
 
         // La flotte est l'ensemble des drones qui évoluent dans notre espace aérien
         private List<Drone> fleet;
+        private List<Obstacle> Champ;
 
         BufferedGraphicsContext currentContext;
         BufferedGraphics airspace;
 
         // Initialisation de l'espace aérien avec un certain nombre de drones
-        public AirSpace(List<Drone> fleet)
+        public AirSpace(List<Drone> fleet, List<Obstacle> Champ)
         {
             InitializeComponent();
             // Gets a reference to the current BufferedGraphicsContext
@@ -27,6 +29,7 @@ namespace Drones
             // dimensions the same size as the drawing surface of the form.
             airspace = currentContext.Allocate(this.CreateGraphics(), this.DisplayRectangle);
             this.fleet = fleet;
+            this.Champ = Champ;
 
             this.KeyPreview = true;
 
@@ -67,69 +70,47 @@ namespace Drones
                     break;
             }
         }
+        public static bool DetecterCollision(Drone drone, Obstacle obstacle)
+        {
+            return
+                drone.X < obstacle.X + obstacle.Largeur &&
+                drone.X + Drone.TAILLE > obstacle.X &&
+                drone.Y < obstacle.Y + obstacle.Profondeur &&
+                drone.Y + Drone.TAILLE > obstacle.Y;
+        }
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.W)
+            foreach (var drone in fleet)
             {
-                foreach (var drone in fleet)
-                {
-                    drone.etat();
+                drone.etat(); // Ajuste la vitesse à 2 (comme dans ta classe)
 
-                    for (int i = 0; i < 5; i++)
-                    {
-                        drone.avancer();
-                        drone.Update(100); // Tu peux adapter
-                        Render();          // Affiche à l'écran
-                        Thread.Sleep(50);
-                    }
-                }
-            }
-            if (e.KeyCode == Keys.D)
-            {
-                foreach (var drone in fleet)
+                for (int i = 0; i < 5; i++)
                 {
-                    drone.etat();
-
-                    for (int i = 0; i < 5; i++)
+                    switch (e.KeyCode)
                     {
-                        drone.droite();
-                        drone.Update(100); // Tu peux adapter
-                        Render();          // Affiche à l'écran
-                        Thread.Sleep(50);
+                        case Keys.W:
+                            drone.avancer();
+                            break;
+                        case Keys.D:
+                            drone.droite();
+                            break;
+                        case Keys.S:
+                            drone.reculer();
+                            break;
+                        case Keys.A:
+                            drone.gauche();
+                            break;
+                        default:
+                            break;
                     }
-                }
-            }
-            if (e.KeyCode == Keys.S)
-            {
-                foreach (var drone in fleet)
-                {
-                    drone.etat();
 
-                    for (int i = 0; i < 5; i++)
-                    {
-                        drone.reculer();
-                        drone.Update(100); // Tu peux adapter
-                        Render();          // Affiche à l'écran
-                        Thread.Sleep(50);
-                    }
-                }
-            }
-            if (e.KeyCode == Keys.A)
-            {
-                foreach (var drone in fleet)
-                {
-                    drone.etat();
-
-                    for (int i = 0; i < 5; i++)
-                    {
-                        drone.gauche();
-                        drone.Update(100); // Tu peux adapter
-                        Render();          // Affiche à l'écran
-                        Thread.Sleep(50);
-                    }
+                    drone.Update(100, Champ); // obstaclesList = ta liste d'obstacles
+                    Render();
+                    Thread.Sleep(50);
                 }
             }
         }
+
 
         // Affichage de la situation actuelle
         private void Render()
@@ -141,23 +122,27 @@ namespace Drones
             {
                 drone.Render(airspace);
             }
+            foreach (Obstacle obstacle in Champ)
+            {
+                obstacle.Render(airspace);
+            }
 
             airspace.Render();
         }
 
         // Calcul du nouvel état après que 'interval' millisecondes se sont écoulées
-        private void Update(int interval)
+        private void Update(int interval, List<Obstacle> obstacles)
         {
             foreach (Drone drone in fleet)
             {
-                drone.Update(interval);
+                drone.Update(100, Champ);
             }
         }
 
         // Méthode appelée à chaque frame
         private void NewFrame(object sender, EventArgs e)
         {
-            this.Update(ticker.Interval);
+            this.Update(ticker.Interval, Champ);
             this.Render();
         }
     }
