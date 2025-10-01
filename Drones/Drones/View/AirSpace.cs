@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -11,18 +12,21 @@ namespace Drones
     {
         public static readonly int WIDTH = 1200;        // Dimensions of the airspace
         public static readonly int HEIGHT = 600;
+        private Point mousePosition;
 
         // La flotte est l'ensemble des drones qui évoluent dans notre espace aérien
         private List<Player> fleet;
         private List<Obstacle> fields;
+        private List<Shoot> pulls;
 
         BufferedGraphicsContext currentContext;
         BufferedGraphics airspace;
 
         // Initialisation de l'espace aérien avec un certain nombre de drones
-        public AirSpace(List<Player> fleet, List<Obstacle> fields)
+        public AirSpace(List<Player> fleet, List<Obstacle> fields, List<Shoot> pulls)
         {
             InitializeComponent();
+            this.MouseMove += AirSpace_MouseMove;
             // Gets a reference to the current BufferedGraphicsContext
             currentContext = BufferedGraphicsManager.Current;
             // Creates a BufferedGraphics instance associated with this form, and with
@@ -30,16 +34,20 @@ namespace Drones
             airspace = currentContext.Allocate(this.CreateGraphics(), this.DisplayRectangle);
             this.fleet = fleet;
             this.fields = fields;
+            this.pulls = pulls;
 
             this.KeyPreview = true;
 
-            InitializeComponent();
+            
 
             this.KeyPreview = true; // Ensures the form captures key events before child controls
             this.KeyUp += Form1_KeyUp;
             this.KeyDown += Form1_KeyDown;
         }
-
+        private void AirSpace_MouseMove(object sender, MouseEventArgs e)
+        {
+            mousePosition = e.Location;
+        }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -100,13 +108,16 @@ namespace Drones
                         case Keys.A:
                             player.gauche();
                             break;
+                        case Keys.Space:
+                            player.shoot(pulls, mousePosition);
+                            break;
                         default:
                             break;
                     }
 
-                    player.Update(100, fields); // obstaclesList = ta liste d'obstacles
+                    player.Update(100, fields); 
                     Render();
-                    Thread.Sleep(50);
+                    Thread.Sleep(5);
                 }
             }
         }
@@ -126,6 +137,10 @@ namespace Drones
             {
                 obstacle.Render(airspace);
             }
+            foreach(Shoot pulls in pulls)
+            {
+                pulls.Render(airspace);
+            }
 
             airspace.Render();
         }
@@ -136,6 +151,10 @@ namespace Drones
             foreach (Player drone in fleet)
             {
                 drone.Update(10, fields);
+            }
+            foreach (Shoot pulls in pulls)
+            {
+                pulls.Update();
             }
         }
 

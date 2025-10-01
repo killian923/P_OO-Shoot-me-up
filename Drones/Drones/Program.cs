@@ -17,6 +17,7 @@ namespace Drones
             // Création de la flotte de drones
             List<Player> fleet= new List<Player>();
             List<Obstacle> fields = new List<Obstacle>();
+            List<Shoot> pulls = new List<Shoot>();
 
             Player drone = new Player(AirSpace.WIDTH / 2, AirSpace.HEIGHT / 2, "Joe", 0, 0);
 
@@ -37,7 +38,7 @@ namespace Drones
 
 
             // Démarrage
-            Application.Run(new AirSpace(fleet , fields));
+            Application.Run(new AirSpace(fleet , fields, pulls));
         }
     }
 }
