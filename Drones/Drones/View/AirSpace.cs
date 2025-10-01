@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Numerics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -76,6 +77,12 @@ namespace Drones
                         drone.droite();
                     }
                     break;
+                case Keys.Space:
+                    foreach (var player in fleet)
+                    {
+                        player.shoot(pulls, mousePosition);
+                    }
+                    break;
             }
         }
         public static bool DetecterCollision(Player drone, Obstacle obstacle)
@@ -107,9 +114,6 @@ namespace Drones
                             break;
                         case Keys.A:
                             player.gauche();
-                            break;
-                        case Keys.Space:
-                            player.shoot(pulls, mousePosition);
                             break;
                         default:
                             break;

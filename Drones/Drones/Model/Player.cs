@@ -93,6 +93,7 @@
         {
             Bitmap rotatedBmp = new Bitmap(img.Width, img.Height); //nouveau bitmap(information graphique) avec la taille de l'image
             rotatedBmp.SetResolution(img.HorizontalResolution, img.VerticalResolution);
+        
 
             using (Graphics g = Graphics.FromImage(rotatedBmp)) //permet de dessinner dans la nouvelle image (bitmap)
             {
@@ -123,10 +124,9 @@
                 float angleDeg = (float)(angleRad * (180.0 / Math.PI));
 
                 // 3. On crée l’image pivotée
-                Image rotated = RotateImage(img, angleDeg);
+                Image imgRotated = RotateImage(img, angleDeg);
 
-                // 4. On ajoute le projectile orienté
-                pulls.Add(new Shoot(this.X, this.Y, rotated, 50, targetPosition.X, targetPosition.Y));
+                pulls.Add(new Shoot(this.X, this.Y, imgRotated, 35, targetPosition.X, targetPosition.Y));
 
                 lastTireCall = now;
             }
