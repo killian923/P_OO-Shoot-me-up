@@ -39,7 +39,7 @@ namespace Drones
 
             this.KeyPreview = true;
 
-            
+
 
             this.KeyPreview = true; // Ensures the form captures key events before child controls
             this.KeyUp += Form1_KeyUp;
@@ -119,7 +119,7 @@ namespace Drones
                             break;
                     }
 
-                    player.Update(100, fields); 
+                    player.Update(100, fields);
                     Render();
                     Thread.Sleep(5);
                 }
@@ -141,7 +141,7 @@ namespace Drones
             {
                 obstacle.Render(airspace);
             }
-            foreach(Shoot pulls in pulls)
+            foreach (Shoot pulls in pulls)
             {
                 pulls.Render(airspace);
             }
@@ -152,6 +152,7 @@ namespace Drones
         // Calcul du nouvel état après que 'interval' millisecondes se sont écoulées
         private void Update(int interval, List<Obstacle> obstacles)
         {
+
             foreach (Player drone in fleet)
             {
                 drone.Update(10, fields);
@@ -160,6 +161,40 @@ namespace Drones
             {
                 pulls.Update();
             }
+
+            List<Shoot> projectilesToRemove = new List<Shoot>();
+            List<Obstacle> obstaclesToRemove = new List<Obstacle>();
+
+            foreach (var projectile in pulls)
+            {
+
+
+                Rectangle projRect = projectile.GetRectangle();
+
+                bool handled = false;
+
+
+                foreach (var obstacle in fields)
+                {
+                    if (projRect.IntersectsWith(obstacle.GetRectangle()))
+                    {
+                        projectilesToRemove.Add(projectile);
+                        obstacle.Vie--;
+                        if (obstacle.Vie == 0)
+                            obstaclesToRemove.Add(obstacle);
+
+                        handled = true;
+                        break;
+                    }
+                }
+                if (handled) continue;
+            }
+                foreach (var o in obstaclesToRemove)
+                    fields.Remove(o);
+
+                foreach (var p in projectilesToRemove)
+                    pulls.Remove(p);
+            
         }
 
         // Méthode appelée à chaque frame

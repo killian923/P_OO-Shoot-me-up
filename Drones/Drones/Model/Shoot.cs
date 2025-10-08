@@ -38,14 +38,14 @@ namespace Drones
             vx = Speed * dx / distance;
             vy = Speed * dy / distance;
         }
-
-
         public void Update()
         {
             realX += vx;
             realY += vy;
         }
-
-
+        public Rectangle GetRectangle()
+        {
+            return new Rectangle(X, Y, 50, 50);
+        }
     }
 }

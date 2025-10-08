@@ -7,9 +7,6 @@ namespace Drones
 
     public partial class Player
     {
-        //private Pen droneBrush = new Pen(new SolidBrush(Color.Purple), 3);
-        //private Image player = Image.FromFile(@"D:\P_OO-Shoot-me-up\Drones\Drones\Resources\SheriffMale.png");
-
         // De manière graphique
         public void Render(BufferedGraphics drawingSpace)
         {

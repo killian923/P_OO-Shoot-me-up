@@ -13,6 +13,7 @@ namespace Drones
         private Color _color;
         private int _largeur;
         private int _profondeur;
+        private int _vie = 10;
 
         public int X { get => _x; set => _x = value; }
         public int Y { get => _y; set => _y = value; }
@@ -20,6 +21,7 @@ namespace Drones
         public int Profondeur { get => _profondeur; set => _profondeur = value; }
 
         public Color BuildingColor { get => _color; set => _color = value; }
+        public int Vie { get => _vie; set => _vie = value; }
 
         public Obstacle(int x, int y, Color colorDef, int largeur, int profondeur)
         {
@@ -28,6 +30,11 @@ namespace Drones
             _color = colorDef;
             _largeur = largeur;
             _profondeur = profondeur;
+           
+        }
+        public Rectangle GetRectangle()
+        {
+            return new Rectangle(X, Y, Largeur, Profondeur);
         }
     }
 }

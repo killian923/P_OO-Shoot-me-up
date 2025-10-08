@@ -114,7 +114,7 @@ namespace Drones
         {
             DateTime now = DateTime.Now;
 
-            if ((now - lastTireCall).TotalSeconds >= 0.3)
+            if ((now - lastTireCall).TotalSeconds >= 0.5)
             {
                 Image img = Resources.bullet;
                 
