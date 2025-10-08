@@ -1,4 +1,7 @@
-﻿namespace Drones
+﻿using Drones.Properties;
+using System.Reflection;
+
+namespace Drones
 {
     // Cette partie de la classe Player définit ce qu'est un drone par un modèle numérique
     public partial class Player
@@ -113,8 +116,8 @@
 
             if ((now - lastTireCall).TotalSeconds >= 0.3)
             {
-                Image img = Image.FromFile(@"D:\P_OO-Shoot-me-up\Drones\Drones\Resources\bullet.png");
-
+                Image img = Resources.bullet;
+                
                 // 1. Calcul de l’angle en radians
                 double dx = targetPosition.X - this.X;
                 double dy = targetPosition.Y - this.Y;
@@ -131,7 +134,5 @@
                 lastTireCall = now;
             }
         }
-
-
-    }
+    } 
 }

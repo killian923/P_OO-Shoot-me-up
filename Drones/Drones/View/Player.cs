@@ -4,17 +4,16 @@ using System.Resources;
 
 namespace Drones
 {
-    // Cette partie de la classe Player définit comment on peut voir un drone
 
     public partial class Player
     {
         //private Pen droneBrush = new Pen(new SolidBrush(Color.Purple), 3);
-        private Image player = Image.FromFile(@"D:\P_OO-Shoot-me-up\Drones\Drones\Resources\SheriffMale.png");
+        //private Image player = Image.FromFile(@"D:\P_OO-Shoot-me-up\Drones\Drones\Resources\SheriffMale.png");
 
         // De manière graphique
         public void Render(BufferedGraphics drawingSpace)
         {
-            drawingSpace.Graphics.DrawImage(player, new Rectangle( X, Y, 50, 50));
+            drawingSpace.Graphics.DrawImage(Resources.SheriffMale, X, Y, 50, 50);
             drawingSpace.Graphics.DrawString($"{this}", TextHelpers.drawFont, TextHelpers.writingBrush, X + 5, Y - 25);
         }
 
