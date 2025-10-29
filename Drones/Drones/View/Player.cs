@@ -10,8 +10,8 @@ namespace Drones
         // De manière graphique
         public void Render(BufferedGraphics drawingSpace)
         {
-            drawingSpace.Graphics.DrawImage(Resources.SheriffMale, X, Y, 50, 50);
-            drawingSpace.Graphics.DrawString($"{this}", TextHelpers.drawFont, TextHelpers.writingBrush, X + 5, Y - 25);
+            drawingSpace.Graphics.DrawImage(Resources.SheriffMale, playerX, playerY, 50, 50);
+            drawingSpace.Graphics.DrawString($"{this}", TextHelpers.drawFont, TextHelpers.writingBrush, playerX + 5, playerY - 25);
         }
 
         // De manière textuelle

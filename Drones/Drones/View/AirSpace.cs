@@ -19,26 +19,27 @@ namespace Drones
         private List<Player> fleet;
         private List<Obstacle> fields;
         private List<Shoot> pulls;
-
+        private Player _player;
         BufferedGraphicsContext currentContext;
         BufferedGraphics airspace;
 
         // Initialisation de l'espace aérien avec un certain nombre de drones
-        public AirSpace(List<Player> fleet, List<Obstacle> fields, List<Shoot> pulls)
+        public AirSpace(Player player, List<Obstacle> fields, List<Shoot> pulls)
         {
             InitializeComponent();
             this.MouseMove += AirSpace_MouseMove;
+            this.MouseClick += AirSpace_MouseClick;
             // Gets a reference to the current BufferedGraphicsContext
             currentContext = BufferedGraphicsManager.Current;
             // Creates a BufferedGraphics instance associated with this form, and with
             // dimensions the same size as the drawing surface of the form.
             airspace = currentContext.Allocate(this.CreateGraphics(), this.DisplayRectangle);
-            this.fleet = fleet;
+            this._player = player;
             this.fields = fields;
             this.pulls = pulls;
 
             this.KeyPreview = true;
-
+            _player = new Player();
 
 
             this.KeyPreview = true; // Ensures the form captures key events before child controls
@@ -49,80 +50,69 @@ namespace Drones
         {
             mousePosition = e.Location;
         }
+        private void AirSpace_MouseClick(object sender, MouseEventArgs e)
+        {
+
+            if (e.Button == MouseButtons.Left)
+            {
+                _player.shoot(pulls, mousePosition);
+            }
+        }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
                 case Keys.W:
-                    foreach (var drone in fleet)
-                    {
-                        drone.avancer();
-                    }
+
+                    _player.avancer();
                     break;
                 case Keys.S:
-                    foreach (var drone in fleet)
-                    {
-                        drone.reculer();
-                    }
+                    _player.reculer();
                     break;
                 case Keys.A:
-                    foreach (var drone in fleet)
-                    {
-                        drone.gauche();
-                    }
+                    _player.gauche();
                     break;
                 case Keys.D:
-                    foreach (var drone in fleet)
-                    {
-                        drone.droite();
-                    }
+                    _player.droite();
                     break;
-                case Keys.Space:
-                    foreach (var player in fleet)
-                    {
-                        player.shoot(pulls, mousePosition);
-                    }
-                    break;
+
             }
         }
-        public static bool DetecterCollision(Player drone, Obstacle obstacle)
+        public static bool DetecterCollision(Player _player, Obstacle obstacle)
         {
             return
-                drone.X < obstacle.X + obstacle.Largeur &&
-                drone.X + Player.TAILLE > obstacle.X &&
-                drone.Y < obstacle.Y + obstacle.Profondeur &&
-                drone.Y + Player.TAILLE > obstacle.Y;
+                _player.playerX < obstacle.X + obstacle.Largeur &&
+                _player.playerX + Player.TAILLE > obstacle.X &&
+                _player.playerY < obstacle.Y + obstacle.Profondeur &&
+                _player.playerY + Player.TAILLE > obstacle.Y;
         }
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            foreach (var player in fleet)
+            _player.etat(); // Ajuste la vitesse à 2 (comme dans ta classe)
+
+            for (int i = 0; i < 5; i++)
             {
-                player.etat(); // Ajuste la vitesse à 2 (comme dans ta classe)
-
-                for (int i = 0; i < 5; i++)
+                switch (e.KeyCode)
                 {
-                    switch (e.KeyCode)
-                    {
-                        case Keys.W:
-                            player.avancer();
-                            break;
-                        case Keys.D:
-                            player.droite();
-                            break;
-                        case Keys.S:
-                            player.reculer();
-                            break;
-                        case Keys.A:
-                            player.gauche();
-                            break;
-                        default:
-                            break;
-                    }
-
-                    player.Update(100, fields);
-                    Render();
-                    Thread.Sleep(5);
+                    case Keys.W:
+                        _player.avancer();
+                        break;
+                    case Keys.D:
+                        _player.droite();
+                        break;
+                    case Keys.S:
+                        _player.reculer();
+                        break;
+                    case Keys.A:
+                        _player.gauche();
+                        break;
+                    default:
+                        break;
                 }
+
+                _player.Update(100, fields);
+                Render();
+                Thread.Sleep(5);
             }
         }
 
@@ -133,10 +123,9 @@ namespace Drones
             airspace.Graphics.Clear(Color.AliceBlue);
 
             // draw drones
-            foreach (Player player in fleet)
-            {
-                player.Render(airspace);
-            }
+
+            _player.Render(airspace);
+
             foreach (Obstacle obstacle in fields)
             {
                 obstacle.Render(airspace);
@@ -153,10 +142,9 @@ namespace Drones
         private void Update(int interval, List<Obstacle> obstacles)
         {
 
-            foreach (Player drone in fleet)
-            {
-                drone.Update(10, fields);
-            }
+
+            _player.Update(10, fields);
+
             foreach (Shoot pulls in pulls)
             {
                 pulls.Update();
@@ -189,12 +177,12 @@ namespace Drones
                 }
                 if (handled) continue;
             }
-                foreach (var o in obstaclesToRemove)
-                    fields.Remove(o);
+            foreach (var o in obstaclesToRemove)
+                fields.Remove(o);
 
-                foreach (var p in projectilesToRemove)
-                    pulls.Remove(p);
-            
+            foreach (var p in projectilesToRemove)
+                pulls.Remove(p);
+
         }
 
         // Méthode appelée à chaque frame

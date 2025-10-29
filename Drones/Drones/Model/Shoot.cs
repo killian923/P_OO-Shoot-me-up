@@ -11,8 +11,8 @@ namespace Drones
         private double realX;
         private double realY;
 
-        public int X { get { return (int)realX; } }
-        public int Y { get { return (int)realY; } }
+        public int shootX { get { return (int)realX; } }
+        public int shootY { get { return (int)realY; } }
 
         public Image Texture { get; private set; }
         public float Speed { get; private set; }
@@ -45,7 +45,7 @@ namespace Drones
         }
         public Rectangle GetRectangle()
         {
-            return new Rectangle(X, Y, 50, 50);
+            return new Rectangle(shootX, shootY, 50, 50);
         }
     }
 }

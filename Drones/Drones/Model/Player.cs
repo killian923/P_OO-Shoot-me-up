@@ -1,4 +1,5 @@
 ﻿using Drones.Properties;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace Drones
@@ -9,28 +10,30 @@ namespace Drones
         public static readonly int FULLCHARGE = 1000;   // Charge maximale de la batterie
         private int _charge;                            // La charge actuelle de la batterie
         private string _name;                           // Un nom
-        private int _x;                                 // Position en X depuis la gauche de l'espace aérien
-        private int _y;                                 // Position en Y depuis le haut de l'espace aérien
+        private int _x;                                 // Position en playerX depuis la gauche de l'espace aérien
+        private int _y;                                 // Position en playerY depuis le haut de l'espace aérien
         private int _speedx;
         private int _speedy;
         private int _speed;
         private DateTime lastTireCall = DateTime.MinValue;
+        private int nextX;
+        private int nextY;
 
         // Constructeur
-        public Player(int x, int y, string name, int nextX, int nextY)
+        public Player()
         {
-            _x = x;
-            _y = y;
+            _x = 100;
+            _y = 100;
             _speedx = 10;
             _speedy = 0;
             _speed = 4;
-            _name = name;
+            //_name = name;
             _charge = GlobalHelpers.alea.Next(FULLCHARGE); // La charge initiale de la batterie est choisie aléatoirement
 
 
         }
-        public int X { get { return _x; } }
-        public int Y { get { return _y; } }
+        public int playerX { get { return _x; } private set { _x = value; } }
+        public int playerY { get { return _y; } private set { _y = value; } }
         public string Name { get { return _name; } }
         public static readonly int TAILLE = 47; 
 
@@ -39,8 +42,8 @@ namespace Drones
         // que 'interval' millisecondes se sont écoulées
         public void Update(int interval, List<Obstacle> obstacles)
         {
-            int nextX = _x + _speedx;
-            int nextY = _y + _speedy;
+            nextX = _x + _speedx;
+            nextY = _y + _speedy;
 
             bool collision = false;
 
@@ -62,6 +65,7 @@ namespace Drones
             _speedx = 0;
             _speedy = 0;
             _charge--;
+            Debug.WriteLine($"{_x},{_y} {playerX},{playerY}");
         }
 
         public void avancer()
@@ -119,8 +123,8 @@ namespace Drones
                 Image img = Resources.bullet;
                 
                 // 1. Calcul de l’angle en radians
-                double dx = targetPosition.X - this.X;
-                double dy = targetPosition.Y - this.Y;
+                double dx = targetPosition.X - this.playerX;
+                double dy = targetPosition.Y - this.playerY;
                 double angleRad = Math.Atan2(dy, dx);
 
                 // 2. Conversion en degrés
@@ -129,7 +133,7 @@ namespace Drones
                 // 3. On crée l’image pivotée
                 Image imgRotated = RotateImage(img, angleDeg);
 
-                pulls.Add(new Shoot(this.X, this.Y, imgRotated, 35, targetPosition.X, targetPosition.Y));
+                pulls.Add(new Shoot(playerX,playerY, imgRotated,30, targetPosition.X, targetPosition.Y));
 
                 lastTireCall = now;
             }

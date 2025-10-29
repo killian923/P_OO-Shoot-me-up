@@ -8,8 +8,8 @@ namespace Drones
 {
     public partial class Obstacle
     {
-        private int _x;                                // Position en X depuis la gauche de l'espace aérien
-        private int _y;                                 // Position en Y depuis le haut de l'espace aérien
+        private int _x;                                // Position en playerX depuis la gauche de l'espace aérien
+        private int _y;                                 // Position en playerY depuis le haut de l'espace aérien
         private Color _color;
         private int _largeur;
         private int _profondeur;

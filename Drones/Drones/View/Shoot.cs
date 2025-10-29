@@ -10,7 +10,7 @@ namespace Drones
     {
         public void Render(BufferedGraphics drawingSpace)
         {
-            drawingSpace.Graphics.DrawImage(Texture, new Rectangle(X, Y, 50, 50));
+            drawingSpace.Graphics.DrawImage(Texture, new Rectangle(shootX, shootY, 50, 50));
         }
     }
 }
