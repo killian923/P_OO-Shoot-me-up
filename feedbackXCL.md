@@ -41,3 +41,13 @@ Les valeurs possibles du résultat sont: LA (Largement Acquis), A (Acquis), I (I
 | Ecologie (gitignore)       | A        |                                                                                                                                                                                                                                                                                                                                                                                                               |
 | Comportement collectif     | I        | il est important que vous réduisiez les interactions non professionnelles avec vos camarades                                                                                                                                                                                                                                                                                                                  |
 | Comportement individuel    | I        | la prise de pauses prolongées ne me semble pas adéquate. Je n'ai pas l'impression que ces pause vous rendent plus performant par la suite durant les périodes de travail. Surtout si l'on en juge par le retard accumulé du côté de la documentation                                                                                                                                                          |
+
+## Final
+
+- Je n'ai pas reçu de notification de livraison
+
+- Votre repo Git ne contient pas la livraison finale du projet.
+
+- Je n'ai reçu aucun message de votre part me signalant un problème quelconque dans la finalisation du projet.
+
+Je considère donc le projet comme non rendu sans raison valable. Donc donc non-acquis.
